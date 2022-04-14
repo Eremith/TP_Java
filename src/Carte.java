@@ -2,7 +2,7 @@ import java.util.*;
 
 class Carte {
   private String nomCarte;
-  private Plat plats[];
+  private Plat plats[] = null;
 
   // Constructeur par défaut
   Carte(String nomCarte){
@@ -49,10 +49,13 @@ class Carte {
   }
 
   public void afficherPlats() {
+    System.out.println(this.nomCarte + " :");
     if(plats != null) {
-      System.out.println(this.nomCarte + " :");
+      int compteur = 1;
       for(final Plat plat : plats) {
+        System.out.print(compteur + " ");
         plat.afficher();
+        compteur++;
       }
     } else {
       System.out.println("Pas de plats");

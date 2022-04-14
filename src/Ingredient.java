@@ -7,5 +7,10 @@ public enum Ingredient{
   STEAK,
   PATE_PIZZA,
   FROMAGE,
-  SAUCISSE
+  SAUCISSE,
+  LIMONADE,
+  CIDRE_DOUX,
+  BIERE_SANS_ALCOOL,
+  JUS_DE_FRUIT,
+  EAU
 }

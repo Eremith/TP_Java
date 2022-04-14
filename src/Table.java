@@ -1,4 +1,5 @@
 import java.util.*;
+
 class Table {
   private int id;
   private int places;
@@ -6,7 +7,6 @@ class Table {
   private Groupe groupe = null;
   private ArrayList<Plat> listePlatCommande = new ArrayList<Plat>();
   private boolean occupee = false;
-  private Commande commande;
 
   // Constructeur par défaut
   Table(){
@@ -35,9 +35,6 @@ class Table {
   Groupe getGroupe(){
     return this.groupe;
   }
-  Commande getCommande(){
-    return this.commande;
-  }
 
   void setId(int id){
     this.id = id;
@@ -64,7 +61,17 @@ class Table {
     this.listePlatCommande.add(plat);
   }
 
+  void afficherPlats(){
+    int compteur = 1;
+    for (Plat plat : listePlatCommande) {
+      System.out.print(compteur + " ");
+      plat.afficher();
+      compteur++;
+    }
+  }
+
   void envoiCommande(){
+    Commande commande = new Commande();
     commande.setListePlatCommande(listePlatCommande);
     commande.setIdTable(id);
 

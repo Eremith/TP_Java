@@ -59,9 +59,9 @@ class Plat {
 
   public void afficher() {
     if(ingredients != null) {
-      System.out.print("   " + this.nom + " (");
+      System.out.print(" " + this.nom + " (");
       for(final Ingredient ingredient : ingredients) {
-        System.out.print(ingredient.toString() + ", ");
+        System.out.print(ingredient.toString() + "  ");
       }
       System.out.println(")");
     } else {

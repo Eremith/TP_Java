@@ -47,12 +47,23 @@ public class App {
 
 
 
-    Plat burger = new Plat("Burger", Ingredient.PAIN_BURGER, Ingredient.STEAK, Ingredient.SALADE);
+    Plat salade = new Plat("Salade avec tomate", Ingredient.SALADE, Ingredient.TOMATE);
+    Plat salade2 = new Plat("Salade", Ingredient.SALADE);
+    Plat burger = new Plat("Burger", Ingredient.PAIN_BURGER, Ingredient.STEAK);
+    Plat burger2 = new Plat("Burger", Ingredient.PAIN_BURGER, Ingredient.STEAK, Ingredient.SALADE);
+    Plat burger3 = new Plat("Burger", Ingredient.PAIN_BURGER, Ingredient.STEAK, Ingredient.SALADE, Ingredient.TOMATE);
     Plat pizza = new Plat("Pizza", Ingredient.PATE_PIZZA, Ingredient.TOMATE, Ingredient.FROMAGE);
-    Plat salade = new Plat("Salade", Ingredient.SALADE, Ingredient.TOMATE);
+    Plat pizza2 = new Plat("Pizza", Ingredient.PATE_PIZZA, Ingredient.TOMATE, Ingredient.FROMAGE, Ingredient.SAUCISSE);
+    Plat pizza3 = new Plat("Pizza", Ingredient.PATE_PIZZA, Ingredient.TOMATE, Ingredient.FROMAGE, Ingredient.CHAMPIGNON);
 
-    cartePlats.addPlats(burger, pizza, salade);
+    Plat limonade = new Plat("Limonade", Ingredient.LIMONADE);
+    Plat cidre_doux = new Plat("Cidre doux", Ingredient.CIDRE_DOUX);
+    Plat biere_sans_alcool = new Plat("Bière sans alcool", Ingredient.BIERE_SANS_ALCOOL);
+    Plat jus_de_fruit = new Plat("Jus de fruit", Ingredient.JUS_DE_FRUIT);
+    Plat eau = new Plat("Eau", Ingredient.EAU);
 
+    cartePlats.addPlats(salade, salade2, burger, burger2, burger3, pizza, pizza2, pizza3);
+    carteBoissons.addPlats(limonade, cidre_doux, biere_sans_alcool, jus_de_fruit, eau);
 
 
     Scanner scanner = new Scanner(System.in);
@@ -198,6 +209,9 @@ public class App {
     System.out.println("1 Carte des plats");
     System.out.println("2 Carte des boissons");
 
+    // Afficher commande en cours
+    afficherCommande(idTable);
+
     int choix = 0;
     try{
       choix = scanner.nextInt();
@@ -239,6 +253,9 @@ public class App {
       carteBoissons.afficherPlats();
     }
 
+    // Afficher commande en cours
+    afficherCommande(idTable);
+
     int choix = 0;
     try{
       choix = scanner.nextInt();
@@ -256,21 +273,17 @@ public class App {
       case 0:
         choixCarte(idTable, scanner);
         break;
-      case 1:
-        break;
       default:
         if(idCarte == 1){
-          if(choix < cartePlats.length){
-            // ajoutPlat
-          } else {
-            priseDeCommande(idTable, idCarte, scanner);
+          if(choix < cartePlats.getPlats().length + 1){
+            listeTables[idTable].addPlat(cartePlats.getPlats()[choix - 1]);
           }
+          priseDeCommande(idTable, idCarte, scanner);
         } else {
-          if(choix < carteBoissons.length){
-            // ajoutPlat
-          } else {
-            priseDeCommande(idTable, idCarte, scanner);
+          if(carteBoissons.getPlats() != null && choix < carteBoissons.getPlats().length + 1){
+            listeTables[idTable].addPlat(carteBoissons.getPlats()[choix - 1]);
           }
+          priseDeCommande(idTable, idCarte, scanner);
         }
 
         break;
@@ -284,8 +297,10 @@ public class App {
     // On assigne à une table de taille suffisante le serveur et le groupe de clients, la table peut référer au serveur pour add une commande
   }
 
-  static void ajoutPlat(Plat plat, int idTable){
-
+  static void afficherCommande(int idTable){
+    System.out.println();
+    System.out.println("Commande en cours : ");
+    listeTables[idTable].afficherPlats();
   }
 
   static void clear(){
