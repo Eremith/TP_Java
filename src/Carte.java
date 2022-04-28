@@ -53,7 +53,7 @@ class Carte {
     if(plats != null) {
       int compteur = 1;
       for(final Plat plat : plats) {
-        System.out.print(compteur + " ");
+        System.out.printf("%3s", compteur);
         plat.afficher();
         compteur++;
       }

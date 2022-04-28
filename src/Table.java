@@ -35,6 +35,9 @@ class Table {
   Groupe getGroupe(){
     return this.groupe;
   }
+  ArrayList<Plat> getPlats(){
+    return listePlatCommande;
+  }
 
   void setId(int id){
     this.id = id;
@@ -56,17 +59,30 @@ class Table {
       this.occupee = false;
     }
   }
+  void setListePlatCommande(ArrayList<Plat> listePlatCommande){
+    this.listePlatCommande = listePlatCommande;
+  }
 
   void addPlat(Plat plat){
     this.listePlatCommande.add(plat);
+    Collections.sort(this.listePlatCommande);
   }
 
   void afficherPlats(){
     int compteur = 1;
-    for (Plat plat : listePlatCommande) {
-      System.out.print(compteur + " ");
-      plat.afficher();
-      compteur++;
+    int tailleCommande = listePlatCommande.size();
+    System.out.printf("  %10s | %6s | %s\n",  "Quantité", "Prix", "Plat");
+    int nombrePlatsSimilaires = 1;
+    for(int i = 0; i < tailleCommande; i++){
+      if(i + 1 < tailleCommande && listePlatCommande.get(i) == listePlatCommande.get(i + 1)){
+        nombrePlatsSimilaires++;
+      } else {
+        double prixTotal = nombrePlatsSimilaires * listePlatCommande.get(i).getPrix();
+        System.out.printf("%2s %9s %8s", compteur, nombrePlatsSimilaires, prixTotal);
+        listePlatCommande.get(i).afficher();
+        nombrePlatsSimilaires = 1;
+        compteur++;
+      }
     }
   }
 
@@ -74,7 +90,6 @@ class Table {
     Commande commande = new Commande();
     commande.setListePlatCommande(listePlatCommande);
     commande.setIdTable(id);
-
     // Envoi de la commande selon les plats
   }
 }

@@ -1,5 +1,14 @@
 import java.util.*;
 
+
+/*
+Ecran Serveur : (en cours)
+Changer stockage commande dans table en Pair<Integer, ArrayList<Plat>> et fcts qui suivent
+Ecran Manager :
+Ecran Barman :
+Ecran Cuisinier :
+*/
+
 public class App {
 
   static Carte cartePlats = new Carte("Carte des plats");
@@ -47,22 +56,25 @@ public class App {
 
 
 
-    Plat salade = new Plat("Salade avec tomate", Ingredient.SALADE, Ingredient.TOMATE);
-    Plat salade2 = new Plat("Salade", Ingredient.SALADE);
-    Plat burger = new Plat("Burger", Ingredient.PAIN_BURGER, Ingredient.STEAK);
-    Plat burger2 = new Plat("Burger", Ingredient.PAIN_BURGER, Ingredient.STEAK, Ingredient.SALADE);
-    Plat burger3 = new Plat("Burger", Ingredient.PAIN_BURGER, Ingredient.STEAK, Ingredient.SALADE, Ingredient.TOMATE);
-    Plat pizza = new Plat("Pizza", Ingredient.PATE_PIZZA, Ingredient.TOMATE, Ingredient.FROMAGE);
-    Plat pizza2 = new Plat("Pizza", Ingredient.PATE_PIZZA, Ingredient.TOMATE, Ingredient.FROMAGE, Ingredient.SAUCISSE);
-    Plat pizza3 = new Plat("Pizza", Ingredient.PATE_PIZZA, Ingredient.TOMATE, Ingredient.FROMAGE, Ingredient.CHAMPIGNON);
+    Plat salade = new Plat("Salade", 9, Ingredient.SALADE, Ingredient.TOMATE);
+    Plat salade2 = new Plat("Salade", 9, Ingredient.SALADE);
+    Plat potage1 = new Plat("Potage", 8, Ingredient.OIGNON, Ingredient.OIGNON, Ingredient.OIGNON);
+    Plat potage2 = new Plat("Potage", 8, Ingredient.TOMATE, Ingredient.TOMATE, Ingredient.TOMATE);
+    Plat potage3 = new Plat("Potage", 8, Ingredient.CHAMPIGNON, Ingredient.CHAMPIGNON, Ingredient.CHAMPIGNON);
+    Plat burger = new Plat("Burger", 15, Ingredient.PAIN_BURGER, Ingredient.STEAK);
+    Plat burger2 = new Plat("Burger", 15, Ingredient.PAIN_BURGER, Ingredient.STEAK, Ingredient.SALADE);
+    Plat burger3 = new Plat("Burger", 15, Ingredient.PAIN_BURGER, Ingredient.STEAK, Ingredient.SALADE, Ingredient.TOMATE);
+    Plat pizza = new Plat("Pizza", 12, Ingredient.PATE_PIZZA, Ingredient.TOMATE, Ingredient.FROMAGE);
+    Plat pizza2 = new Plat("Pizza", 12, Ingredient.PATE_PIZZA, Ingredient.TOMATE, Ingredient.FROMAGE, Ingredient.SAUCISSE);
+    Plat pizza3 = new Plat("Pizza", 12, Ingredient.PATE_PIZZA, Ingredient.TOMATE, Ingredient.FROMAGE, Ingredient.CHAMPIGNON);
 
-    Plat limonade = new Plat("Limonade", Ingredient.LIMONADE);
-    Plat cidre_doux = new Plat("Cidre doux", Ingredient.CIDRE_DOUX);
-    Plat biere_sans_alcool = new Plat("Bière sans alcool", Ingredient.BIERE_SANS_ALCOOL);
-    Plat jus_de_fruit = new Plat("Jus de fruit", Ingredient.JUS_DE_FRUIT);
-    Plat eau = new Plat("Eau", Ingredient.EAU);
+    Plat limonade = new Plat("Limonade", 4, Ingredient.LIMONADE);
+    Plat cidre_doux = new Plat("Cidre doux", 5, Ingredient.CIDRE_DOUX);
+    Plat biere_sans_alcool = new Plat("Bière sans alcool", 5, Ingredient.BIERE_SANS_ALCOOL);
+    Plat jus_de_fruit = new Plat("Jus de fruit", 1, Ingredient.JUS_DE_FRUIT);
+    Plat eau = new Plat("Eau", 0, Ingredient.EAU);
 
-    cartePlats.addPlats(salade, salade2, burger, burger2, burger3, pizza, pizza2, pizza3);
+    cartePlats.addPlats(salade, salade2, potage1, potage2, potage3, burger, burger2, burger3, pizza, pizza2, pizza3);
     carteBoissons.addPlats(limonade, cidre_doux, biere_sans_alcool, jus_de_fruit, eau);
 
 
@@ -110,6 +122,7 @@ public class App {
       case -1:
         break;
       default:
+        choixEcran(scanner);
         break;
     }
   }
@@ -208,9 +221,7 @@ public class App {
     System.out.println("-1 Fermer");
     System.out.println("1 Carte des plats");
     System.out.println("2 Carte des boissons");
-
-    // Afficher commande en cours
-    afficherCommande(idTable);
+    System.out.println("-2 Détail commande en cours");
 
     int choix = 0;
     try{
@@ -231,30 +242,31 @@ public class App {
         break;
       case 1:
       case 2:
-          priseDeCommande(idTable, choix, scanner);
-        break;
+        priseDeCommande(idTable, choix, scanner);
+      break;
+      case -2:
+        detailCommande(idTable, choix, scanner);
+      break;
       default:
         choixCarte(idTable, scanner);
-        break;
+      break;
     }
 
   }
 
   static void priseDeCommande(int idTable, int idCarte, Scanner scanner){
 
-    System.out.println("------------Prise de commandes----------");
+    System.out.println("--------Prise de commandes table "+idTable+"------");
     System.out.println("Table " + idTable);
     System.out.println("0 Retour");
     System.out.println("-1 Fermer");
+    System.out.println("-2 Afficher commande en cours");
 
     if(idCarte == 1){
       cartePlats.afficherPlats();
     } else {
       carteBoissons.afficherPlats();
     }
-
-    // Afficher commande en cours
-    afficherCommande(idTable);
 
     int choix = 0;
     try{
@@ -268,6 +280,12 @@ public class App {
     }
 
     switch(choix){
+      case -2:
+        // Afficher commande en cours
+        //afficherCommande(idTable);
+        //priseDeCommande(idTable, choix, scanner);
+        detailCommande(idTable, choix, scanner);
+      break;
       case -1:
         break;
       case 0:
@@ -286,7 +304,7 @@ public class App {
           priseDeCommande(idTable, idCarte, scanner);
         }
 
-        break;
+      break;
     }
 
     // A chaque sélection d'un plat, l'ajoute dans un txt / json avec l'id de la table et reviens sur la prise de commande
@@ -295,6 +313,62 @@ public class App {
     // Affichage commande en cours : option de suppression ou de modifier la quantité
 
     // On assigne à une table de taille suffisante le serveur et le groupe de clients, la table peut référer au serveur pour add une commande
+  }
+
+  static void detailCommande(int idTable, int idCarte, Scanner scanner){
+    System.out.println("---------Détail commande table "+idTable+"-------");
+    System.out.println("0 Retour");
+    System.out.println("-1 Fermer");
+
+    afficherCommande(idTable);
+
+    int choix = 0;
+    try{
+      choix = scanner.nextInt();
+      clear();
+    } catch(InputMismatchException ex){
+      clear();
+      System.out.println(ex + " : L'entrée n'est pas du type requis");
+      scanner.nextLine();
+      detailCommande(idTable, idCarte, scanner);
+    }
+
+    switch(choix){
+      case -1:
+        break;
+      case 0:
+        priseDeCommande(idTable, idCarte, scanner);
+        break;
+      default:
+        int tailleCommande = listeTables[idTable].getPlats().size();
+        ArrayList<Plat> copiePlat = listeTables[idTable].getPlats();
+        if(tailleCommande >= choix){
+          System.out.print("Entrez la nouvelle quantité : ");
+          int quantite = scanner.nextInt();
+          ArrayList<Integer> indexPlatsSimilaires = new ArrayList<Integer>();
+          for(int i = 0; i < tailleCommande; i++){
+            if(copiePlat.get(choix - 1) == copiePlat.get(i)){
+              indexPlatsSimilaires.add(i);
+            }
+          }
+          if(quantite < indexPlatsSimilaires.size()){
+            while(quantite > indexPlatsSimilaires.size()){
+              int index = indexPlatsSimilaires.get(indexPlatsSimilaires.size());
+              copiePlat.remove(index);
+              indexPlatsSimilaires.remove(indexPlatsSimilaires.size());
+            }
+          } else {
+            while(quantite > indexPlatsSimilaires.size()){
+              copiePlat.add(copiePlat.get(choix - 1));
+              quantite--;
+            }
+          }
+          Collections.sort(copiePlat);
+          listeTables[idTable].setListePlatCommande(copiePlat);
+        }
+        detailCommande(idTable, idCarte, scanner);
+      break;
+    }
   }
 
   static void afficherCommande(int idTable){
@@ -319,10 +393,6 @@ class Restaurant {
 
 class Bar {
   // Barman + liste des commandes dans l'ordre d'apparition
-}
-
-class Cuisine {
-  // Cuisiniers + liste des commandes dans l'ordre d'apparition
 }
 
 class Addition {

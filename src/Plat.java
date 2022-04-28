@@ -1,15 +1,17 @@
 import java.util.*;
 
-class Plat {
+class Plat implements Comparable<Plat>{
   private String nom = "inconnu";
+  private double prix = -1;
   private Ingredient ingredients[];
 
   // Constructeur par défaut
   Plat(){}
 
   // Constructeur
-  Plat(String nom, Ingredient ...ingredients){
+  Plat(String nom, int prix, Ingredient ...ingredients){
     this.nom = nom;
+    this.prix = prix;
     if(ingredients != null) {
       this.ingredients = Arrays.copyOf(ingredients, ingredients.length);
     }
@@ -21,13 +23,34 @@ class Plat {
   void setNom(String nom){
     this.nom = nom;
   }
+  void setPrix(double prix){
+    this.prix = prix;
+  }
 
   String getNom(){
     return this.nom;
   }
+  double getPrix(){
+    return this.prix;
+  }
   Ingredient[] getIngredients(){
     return this.ingredients;
   }
+
+  @Override
+  public String toString() {
+    String idPlat = "";
+    idPlat += this.nom + this.prix;
+    for(int i = 0; i < ingredients.length; i++){
+      idPlat += ingredients[i];
+    }
+    return idPlat;
+  }
+
+  @Override
+	public int compareTo(Plat e) {
+		return this.toString().compareTo(e.toString());
+	}
 
   void addIngredients(Ingredient ...ingredients){
     if(ingredients != null) {
@@ -59,13 +82,17 @@ class Plat {
 
   public void afficher() {
     if(ingredients != null) {
-      System.out.print(" " + this.nom + " (");
+      System.out.printf("%20s | %4s", this.nom, this.prix);
+      System.out.print(" | Ingrédients : ");
       for(final Ingredient ingredient : ingredients) {
-        System.out.print(ingredient.toString() + "  ");
+        System.out.print(ingredient.toString());
+        System.out.print(", ");
       }
-      System.out.println(")");
+      System.out.println();
     } else {
       System.out.println("Pas d'ingrédients");
     }
   }
+
+  
 }
